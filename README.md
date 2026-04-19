@@ -15,7 +15,7 @@ Convert English (AD) dates to Nepali (BS) in Laravel.
 ## Installation
 
 ```bash
-composer require rakeshrai/laravel-nepali-date
+composer require rakeshrai/laravel-nepali-date-converter
 ```
 
 ## Development setup
