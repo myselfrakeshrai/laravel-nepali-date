@@ -1,0 +1,47 @@
+{
+  "name": "rakeshrai/laravel-nepali-date-converter",
+  "description": "Laravel Nepali Date Converter is a package to convert English (AD) dates to Nepali (BS)",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Rakesh Rai"
+    }
+  ],
+  "require": {
+    "php": "^8.1",
+    "illuminate/support": "^10.0|^11.0|^12.0"
+  },
+  "require-dev": {
+    "orchestra/testbench": "^8.0|^9.0|^10.0",
+    "phpunit/phpunit": "^10.0|^11.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "RakeshRai\\LaravelNepaliDate\\": "src/"
+    },
+    "files": [
+      "src/helpers.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "RakeshRai\\LaravelNepaliDate\\Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "RakeshRai\\LaravelNepaliDate\\LaravelNepaliDateServiceProvider"
+      ],
+      "aliases": {
+        "LaravelNepaliDate": "RakeshRai\\LaravelNepaliDate\\Facades\\LaravelNepaliDate"
+      }
+    }
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "scripts": {
+    "test": "phpunit"
+  }
+}

@@ -1,0 +1,11 @@
+/vendor/
+.phpunit.cache/
+coverage/
+.clover.xml
+.phpunit.result.cache
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
