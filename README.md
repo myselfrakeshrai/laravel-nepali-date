@@ -42,9 +42,27 @@ php artisan vendor:publish --tag=nepali-date-config
 ### Helper
 
 ```php
-bs_date('2026-04-20'); // 2083-01-07 (example)
+bs_date('2026-04-20'); // 2083-01-07
 bs_date(now(), 'Y/m/d');
+
+// preset labels
+bs_date('2026-04-20 15:45:00', 'bs_label');      // monday 7, Baishak 2083
+bs_date('2026-04-20 15:45:00', 'bs_label_simp'); // 7, Baishak 2083
+bs_date('2026-04-20 15:45:00', 'bs_label_time'); // 7, Baishak 2083 03:45 PM
+bs_date('2026-04-20 15:45:00', 'bs_time');       // 07-01-2083 03:45 PM
 ```
+
+### Supported preset formats
+
+- `bs_label` => `sunday 12, Baishak 2083`
+- `bs_label_simp` => `12, Baishak 2083`
+- `bs_label_time` => `12, Baishak 2083 hh:mm AM`
+- `bs_time` => `12-01-2083 hh:mm AM`
+
+### Custom format tokens
+
+- BS date: `Y`, `y`, `m`, `n`, `d`, `j`, `F`
+- AD time/day passthrough: `l`, `H`, `h`, `i`, `s`, `A`
 
 ### Facade
 
@@ -53,7 +71,15 @@ use LaravelNepaliDate;
 
 LaravelNepaliDate::toString('2026-04-20');
 LaravelNepaliDate::from('2026-04-20');
-// ['year' => 2083, 'month' => 1, 'day' => 7, 'formatted' => '2083-01-07']
+// [
+//   'year' => 2083,
+//   'month' => 1,
+//   'day' => 7,
+//   'month_name' => 'Baishak',
+//   'week_day' => 'monday',
+//   'time' => '12:00 AM',
+//   'formatted' => '2083-01-07',
+// ]
 ```
 
 ### Blade

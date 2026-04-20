@@ -14,7 +14,7 @@ final class LaravelNepaliDate
 
     /**
      * @param DateTimeInterface|string $englishDate
-     * @return array{year:int,month:int,day:int,formatted:string}
+     * @return array{year:int,month:int,day:int,formatted:string,month_name:string,week_day:string,time:string}
      */
     public function from(DateTimeInterface|string $englishDate, ?string $format = null): array
     {

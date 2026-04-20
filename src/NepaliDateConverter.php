@@ -20,6 +20,26 @@ final class NepaliDateConverter
     private const BASE_BS_YEAR = 2000;
     private const BASE_BS_MONTH = 1;
     private const BASE_BS_DAY = 1;
+    private const FORMAT_BS_LABEL = 'bs_label';
+    private const FORMAT_BS_LABEL_SIMP = 'bs_label_simp';
+    private const FORMAT_BS_LABEL_TIME = 'bs_label_time';
+    private const FORMAT_BS_TIME = 'bs_time';
+
+    /** @var array<int, string> */
+    private const BS_MONTH_NAMES = [
+        1 => 'Baishak',
+        2 => 'Jestha',
+        3 => 'Ashadh',
+        4 => 'Shrawan',
+        5 => 'Bhadra',
+        6 => 'Ashwin',
+        7 => 'Kartik',
+        8 => 'Mangsir',
+        9 => 'Poush',
+        10 => 'Magh',
+        11 => 'Falgun',
+        12 => 'Chaitra',
+    ];
 
     /** @var array<int, array<int, int>> */
     private array $bsCalendar;
@@ -34,11 +54,12 @@ final class NepaliDateConverter
 
     /**
      * @param DateTimeInterface|string $englishDate
-     * @return array{year:int,month:int,day:int,formatted:string}
+     * @return array{year:int,month:int,day:int,formatted:string,month_name:string,week_day:string,time:string}
      */
     public function convert(DateTimeInterface|string $englishDate, ?string $format = null): array
     {
-        $date = $this->normalizeDate($englishDate);
+        $sourceDateTime = $this->normalizeDateTime($englishDate);
+        $date = $this->normalizeDate($sourceDateTime);
 
         $daysDiff = $this->daysFromBase($date);
 
@@ -83,7 +104,10 @@ final class NepaliDateConverter
             'year' => $year,
             'month' => $month,
             'day' => $day,
-            'formatted' => $this->formatBsDate($year, $month, $day, $outFormat),
+            'month_name' => $this->bsMonthName($month),
+            'week_day' => strtolower($sourceDateTime->format('l')),
+            'time' => $sourceDateTime->format('h:i A'),
+            'formatted' => $this->formatBsDate($year, $month, $day, $sourceDateTime, $outFormat),
         ];
     }
 
@@ -106,13 +130,18 @@ final class NepaliDateConverter
     /**
      * @param DateTimeInterface|string $englishDate
      */
-    private function normalizeDate(DateTimeInterface|string $englishDate): DateTimeImmutable
+    private function normalizeDateTime(DateTimeInterface|string $englishDate): DateTimeImmutable
     {
         if ($englishDate instanceof DateTimeInterface) {
-            return new DateTimeImmutable($englishDate->format('Y-m-d'), new DateTimeZone('UTC'));
+            return DateTimeImmutable::createFromInterface($englishDate);
         }
 
-        return new DateTimeImmutable((new DateTimeImmutable($englishDate))->format('Y-m-d'), new DateTimeZone('UTC'));
+        return new DateTimeImmutable($englishDate);
+    }
+
+    private function normalizeDate(DateTimeImmutable $englishDate): DateTimeImmutable
+    {
+        return new DateTimeImmutable($englishDate->format('Y-m-d'), new DateTimeZone('UTC'));
     }
 
     private function daysFromBase(DateTimeImmutable $date): int
@@ -124,8 +153,33 @@ final class NepaliDateConverter
         return (int) floor($seconds / 86400);
     }
 
-    private function formatBsDate(int $year, int $month, int $day, string $format): string
-    {
+    private function formatBsDate(
+        int $year,
+        int $month,
+        int $day,
+        DateTimeImmutable $sourceDateTime,
+        string $format
+    ): string {
+        $preset = strtolower(trim($format));
+        $monthName = $this->bsMonthName($month);
+        $time12hr = $sourceDateTime->format('h:i A');
+
+        if ($preset === self::FORMAT_BS_LABEL) {
+            return strtolower($sourceDateTime->format('l')).' '.$day.', '.$monthName.' '.$year;
+        }
+
+        if ($preset === self::FORMAT_BS_LABEL_SIMP) {
+            return $day.', '.$monthName.' '.$year;
+        }
+
+        if ($preset === self::FORMAT_BS_LABEL_TIME) {
+            return $day.', '.$monthName.' '.$year.' '.$time12hr;
+        }
+
+        if ($preset === self::FORMAT_BS_TIME) {
+            return sprintf('%02d-%02d-%04d %s', $day, $month, $year, $time12hr);
+        }
+
         $replace = [
             'Y' => sprintf('%04d', $year),
             'y' => substr((string) $year, -2),
@@ -133,8 +187,20 @@ final class NepaliDateConverter
             'n' => (string) $month,
             'd' => sprintf('%02d', $day),
             'j' => (string) $day,
+            'F' => $monthName,
+            'H' => $sourceDateTime->format('H'),
+            'h' => $sourceDateTime->format('h'),
+            'g' => $sourceDateTime->format('g'),
+            'i' => $sourceDateTime->format('i'),
+            's' => $sourceDateTime->format('s'),
+            'A' => $sourceDateTime->format('A'),
         ];
 
         return strtr($format, $replace);
+    }
+
+    private function bsMonthName(int $month): string
+    {
+        return self::BS_MONTH_NAMES[$month] ?? '';
     }
 }
