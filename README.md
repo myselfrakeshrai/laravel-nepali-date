@@ -37,6 +37,36 @@ GitHub Actions runs tests automatically on every push and pull request:
 php artisan vendor:publish --tag=nepali-date-config
 ```
 
+## What To Do (Quick Start)
+
+1. Install the package:
+
+```bash
+composer require rakeshrai/laravel-nepali-date-converter
+```
+
+2. Publish config:
+
+```bash
+php artisan vendor:publish --tag=nepali-date-config
+```
+
+3. Pick one preferred preset format:
+- `bs_label_full`
+- `bs_label_full_nepday`
+- `bs_label_devanagari`
+- `bs_label_compact`
+- `bs_label_compact_time`
+- `bs_datetime_numeric`
+
+4. Start using helper in Blade/controller:
+
+```php
+bs_date(now(), 'bs_label_compact');
+```
+
+5. If you already use old names (`bs_label_simp`, `bs_time`, `nepalilang`, etc.), no immediate changes are required. Legacy aliases still work.
+
 ## Usage
 
 ### Helper
