@@ -38,11 +38,26 @@ final class NepaliDateConverterTest extends TestCase
     }
 
     #[Test]
-    public function it_supports_preset_label_formats_with_time(): void
+    public function it_supports_preferred_preset_names(): void
+    {
+        $converter = new NepaliDateConverter();
+
+        $this->assertSame('monday 7, Baishak 2083', $converter->toString('2026-04-20 15:45:00', 'bs_label_full'));
+        $this->assertSame('sombar 7, Baishak 2083', $converter->toString('2026-04-20 15:45:00', 'bs_label_full_nepday'));
+        $this->assertSame("\u{0938}\u{094B}\u{092E}\u{092C}\u{093E}\u{0930} \u{096D}, \u{092C}\u{0948}\u{0936}\u{093E}\u{0916} \u{0968}\u{0966}\u{096E}\u{0969}", $converter->toString('2026-04-20 15:45:00', 'bs_label_devanagari'));
+        $this->assertSame('7, Baishak 2083', $converter->toString('2026-04-20 15:45:00', 'bs_label_compact'));
+        $this->assertSame('7, Baishak 2083 03:45 PM', $converter->toString('2026-04-20 15:45:00', 'bs_label_compact_time'));
+        $this->assertSame('07-01-2083 03:45 PM', $converter->toString('2026-04-20 15:45:00', 'bs_datetime_numeric'));
+    }
+
+    #[Test]
+    public function it_keeps_legacy_aliases_working(): void
     {
         $converter = new NepaliDateConverter();
 
         $this->assertSame('monday 7, Baishak 2083', $converter->toString('2026-04-20 15:45:00', 'bs_label'));
+        $this->assertSame('sombar 7, Baishak 2083', $converter->toString('2026-04-20 15:45:00', 'bs_label_nepday'));
+        $this->assertSame("\u{0938}\u{094B}\u{092E}\u{092C}\u{093E}\u{0930} \u{096D}, \u{092C}\u{0948}\u{0936}\u{093E}\u{0916} \u{0968}\u{0966}\u{096E}\u{0969}", $converter->toString('2026-04-20 15:45:00', 'nepalilang'));
         $this->assertSame('7, Baishak 2083', $converter->toString('2026-04-20 15:45:00', 'bs_label_simp'));
         $this->assertSame('7, Baishak 2083 03:45 PM', $converter->toString('2026-04-20 15:45:00', 'bs_label_time'));
         $this->assertSame('07-01-2083 03:45 PM', $converter->toString('2026-04-20 15:45:00', 'bs_time'));

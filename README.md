@@ -1,4 +1,4 @@
-# Laravel Neplai Date
+﻿# Laravel Neplai Date
 
 Author: Rakesh Rai
 
@@ -45,19 +45,32 @@ php artisan vendor:publish --tag=nepali-date-config
 bs_date('2026-04-20'); // 2083-01-07
 bs_date(now(), 'Y/m/d');
 
-// preset labels
-bs_date('2026-04-20 15:45:00', 'bs_label');      // monday 7, Baishak 2083
-bs_date('2026-04-20 15:45:00', 'bs_label_simp'); // 7, Baishak 2083
-bs_date('2026-04-20 15:45:00', 'bs_label_time'); // 7, Baishak 2083 03:45 PM
-bs_date('2026-04-20 15:45:00', 'bs_time');       // 07-01-2083 03:45 PM
+// preferred preset labels
+bs_date('2026-04-20 15:45:00', 'bs_label_full');          // monday 7, Baishak 2083
+bs_date('2026-04-20 15:45:00', 'bs_label_full_nepday');   // sombar 7, Baishak 2083
+bs_date('2026-04-20 15:45:00', 'bs_label_devanagari');    // सोमबार ७, बैशाख २०८३
+bs_date('2026-04-20 15:45:00', 'bs_label_compact');       // 7, Baishak 2083
+bs_date('2026-04-20 15:45:00', 'bs_label_compact_time');  // 7, Baishak 2083 03:45 PM
+bs_date('2026-04-20 15:45:00', 'bs_datetime_numeric');    // 07-01-2083 03:45 PM
 ```
 
-### Supported preset formats
+### Supported preset formats (preferred)
 
-- `bs_label` => `sunday 12, Baishak 2083`
-- `bs_label_simp` => `12, Baishak 2083`
-- `bs_label_time` => `12, Baishak 2083 hh:mm AM`
-- `bs_time` => `12-01-2083 hh:mm AM`
+- `bs_label_full` => `sunday 12, Baishak 2083`
+- `bs_label_full_nepday` => `sombar 12, Baishak 2083`
+- `bs_label_devanagari` => `सोमबार १२, बैशाख २०८३`
+- `bs_label_compact` => `12, Baishak 2083`
+- `bs_label_compact_time` => `12, Baishak 2083 hh:mm AM`
+- `bs_datetime_numeric` => `12-01-2083 hh:mm AM`
+
+### Legacy aliases (still supported)
+
+- `bs_label` => alias of `bs_label_full`
+- `bs_label_nepday` => alias of `bs_label_full_nepday`
+- `nepalilang` => alias of `bs_label_devanagari`
+- `bs_label_simp` => alias of `bs_label_compact`
+- `bs_label_time` => alias of `bs_label_compact_time`
+- `bs_time` => alias of `bs_datetime_numeric`
 
 ### Custom format tokens
 
